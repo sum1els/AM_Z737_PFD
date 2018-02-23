@@ -20,7 +20,7 @@ function item_value_callback_speed(i)
     return string.format("%d", 0 - (i * 20) )
 end
 
-running_text_speed = running_txt_add_ver(-6,-120,10,100,98.5,item_value_callback_speed,"size:26px; font:my737glass.otf; color:white; halign:right;")
+running_text_speed = running_txt_add_ver(-6,-120,10,100,98.5,item_value_callback_speed,"size:20px; font:my737glass.otf; color:white; halign:right;")
 running_txt_move_carot(running_text_speed, 0)
 
 
@@ -157,7 +157,7 @@ qnh_value_white_text = 		txt_add(" ", "size:14px; font:my737glass.otf; color: wh
 qnh_unit_white_text = 		txt_add(" ", "size:12px; font:my737glass.otf; color: white; halign:left;", 667, 735, 45, 16)visible(qnh_unit_white_text,false)
 qnh_std_text = 				txt_add(" ", "size:28px; font:my737glass.otf; color: lime; halign:center;", 610, 696, 80, 32)visible(qnh_std_text,false)
 qnh_std_amber_text = 		txt_add(" ", "size:28px; font:my737glass.otf; color: #FF7F2A; halign:center;", 610, 696, 80, 32)visible(qnh_std_amber_text,false)
-radio_altimeter_text = 		txt_add(" ", "size:34px; font:my737glass.otf; color: white; halign:center;", 285, 522, 125, 36)visible(radio_altimeter_text,false)
+radio_altimeter_text = 		txt_add(" ", "size:30px; font:my737glass.otf; color: white; halign:center;", 285, 527, 125, 36)visible(radio_altimeter_text,false)
 mag_tru_indication =		txt_add(" ", "size:12px; font:my737glass.otf; color: lime; halign:left;", 400, 773, 40, 16)visible(mag_tru_indication,false)
 current_vspeed_pos_text =	txt_add(" ", "size:24px; font:my737glass.otf; color: white; halign:left;", 729, 145, 80, 28)visible(current_vspeed_pos_text,false)
 current_vspeed_neg_text =	txt_add(" ", "size:24px; font:my737glass.otf; color: white; halign:left;", 729, 595, 80, 28)visible(current_vspeed_neg_text,false)
@@ -271,7 +271,7 @@ function item_value_callback_inner_speed_one(i)
 	
 end
 
-running_text_inner_speed_one_id = running_txt_add_ver(65,284,5,22,38, item_value_callback_inner_speed_one, "size:38px; font:my737glass.otf; color:white; halign:right")
+running_text_inner_speed_one_id = running_txt_add_ver(65,284,5,22,40, item_value_callback_inner_speed_one, "size:32px; font:my737glass.otf; color:white; halign:right")
 running_txt_move_carot(running_text_inner_speed_one_id, 0)
 
 viewport_rect(running_text_inner_speed_one_id,65,343,22,79)
@@ -286,7 +286,7 @@ function item_value_callback_inner_speed_ten(i)
 	
 end
 
-running_text_inner_speed_ten_id = running_txt_add_ver(42,257,5,22,52, item_value_callback_inner_speed_ten, "size:38px; font:my737glass.otf; color:white; halign:right")
+running_text_inner_speed_ten_id = running_txt_add_ver(42,257,5,22,54, item_value_callback_inner_speed_ten, "size:32px; font:my737glass.otf; color:white; halign:right")
 running_txt_move_carot(running_text_inner_speed_ten_id, 0)
 
 viewport_rect(running_text_inner_speed_ten_id,42,343,22,79)
@@ -301,7 +301,7 @@ function item_value_callback_inner_speed_hundred(i)
 	
 end
 
-running_text_inner_speed_hundred_id = running_txt_add_ver(19,280,3,22,80, item_value_callback_inner_speed_hundred, "size:38px; font:my737glass.otf; color:white; halign:right")
+running_text_inner_speed_hundred_id = running_txt_add_ver(19,280,3,22,84, item_value_callback_inner_speed_hundred, "size:32px; font:my737glass.otf; color:white; halign:right")
 running_txt_move_carot(running_text_inner_speed_hundred_id, 0)
 
 viewport_rect(running_text_inner_speed_hundred_id,20,343,22,79)
@@ -612,7 +612,7 @@ function altitude_callback(alt_disagree, ias_disagree, baro_in_hpa, baro_pilot, 
 	visible(img_grn_marker,			altitude_ft_pilot < 10000)
 	
 	if gear_force > 0 then
-		txt_set(radio_altimeter_text, 	"-4")
+		txt_set(radio_altimeter_text, 	"-4") -- altimeter to display -4 when at the gate. need to calibrate to display 0 at touchdown. http://www.airliners.net/forum/viewtopic.php?t=776215 
 	else
 		--txt_set(radio_altimeter_text, 	string.format("%d", var_round(radio_altimeter_height, -1)))
 		txt_set(radio_altimeter_text, 	string.format("%d", var_round(radio_altimeter_height / 20) * 20))
@@ -775,8 +775,8 @@ function vertical_speed_callback(vspeed, mcp_vspeed)
 		move(vspeed_bug, nil, 88 / 1000 * math.abs(mcp_vspeed) + 381, nil, nil)
 	end
 	
-	visible(current_vspeed_pos_text,		vspeed >= 400)
-	visible(current_vspeed_neg_text,		vspeed <= -400)
+	visible(current_vspeed_pos_text,		vspeed >= 400) -- Displays vertical speed when greater than 400 feet per minute.
+	visible(current_vspeed_neg_text,		vspeed <= -400) -- Displays vertical speed when greater than 400 feet per minute.
 	visible(vspeed_bug, 					mcp_vspeed > 10 or mcp_vspeed < -10)
 	--visible(img_vsi_needle, 				vspeed > 20 or vspeed < -20)
 
@@ -803,7 +803,7 @@ show_when_irs_aligned = group_add(selected_hdg_bug_text,
 function pfd_callback(vr_set, irs_align_light, alignment_left_remain, radio_altimeter_height_ft_pilot, fmc_irs_mode, i_marker, m_marker, o_marker)
 
 
-	visible(no_vspd_img, 					vr_set == 0)
+	visible(no_vspd_img, 					vr_set == 0) --V1 (decision speed) or VR (rotation speed) has not been entered or is invalid, also goes away on takeoff, but really, should be set, c'mon.
 	visible(img_att_fail, 					(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
 	visible(img_hdg_fail, 					(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
 	
@@ -868,5 +868,23 @@ function pwr_callback(batbus_status)
 end
 xpl_dataref_subscribe("laminar/B738/electric/batbus_status", "INT", pwr_callback)		
 
---
---
+--TO DOs
+--AoA
+--bank indicator
+--BARO Minimums Pointer (green) and  Minimums Reference/Altitude (green) 
+--vref v1 v2 vr
+--ILS DME Approach Reference
+--1000 alt markings
+--adjust boxes
+--Landing Altitude Reference Bar
+--Landing Altitude Indication (amber)
+--Glide Slope Pointer and Deviation Scale
+--Rising Runway (green with magenta stem)
+--Scale ID Annunciation (white)
+--Flight Path Vector (FPV) Indication (white)
+--Speed Trend Vector (green)
+-- laminar/B738/pfd/max_speed  Maximum Speed (red and black)
+-- laminar/B738/pfd/max_maneuver_speed  laminar/B738/pfd/max_maneuver_speed_show Maximum Maneuvering Speed (amber)
+-- laminar/B738/pfd/min_speed  laminar/B738/pfd/min_speed_show Minimum Speed (red and black)
+-- laminar/B738/pfd/min_maneuver_speed laminar/B738/pfd/min_maneuver_speed_show Minimum Maneuver Speed (amber)
+-- any many more ...
