@@ -33,10 +33,7 @@ viewport_rect(running_img_alt, 592, 94.5, 30, 590)
 running_img_speed =				running_img_add_ver("spd_markers.png",104,89,20,16.2,49.25)
 running_img_move_carot(running_img_speed, 0)
 
---//// markers
-i_marker_img = 					img_add("i_marker_img.png", 484, 194.6, 45.4, 45.4)visible(i_marker_img,false)
-m_marker_img = 					img_add("m_marker_img.png", 484, 194.6, 45.4, 45.4)visible(m_marker_img,false)
-o_marker_img = 					img_add("o_marker_img.png", 484, 194.6, 45.4, 45.4)visible(o_marker_img,false)
+
 --//// track indicator
 track_indicator_circle_img = 	img_add("track_indicator_circle_img.png", 107.877, 698.045, 482.399, 482.399)visible(track_indicator_circle_img,false)
 track_pointer_img = 			img_add("track_pointer_img.png", 338.355, 699.245, 21.443, 480)visible(track_pointer_img,false)
@@ -44,9 +41,16 @@ current_heading_pointer_img = 	img_add("current_hdg_pointer_img.png", 336.291, 6
 selected_heading_bug_img = 		img_add("selected_hdg_bug_img.png", 331.5765, 681.673, 35, 514.143)visible(selected_heading_bug_img,false)
 --////
 img_v_speed_tape = 				img_add("v_speed_tape.png", 726.250, 184.817, 71.644, 400.382)visible(img_v_speed_tape,false)
-img_bank_indicators =			img_add("bank_indicators_img.png", 174.205, 183.442, 348.690, 106.585)visible(img_bank_indicators,false)
 img_horz_marks = 				img_add("horizon_marks.png", 248.523, -370, 200, 1500) visible(img_horz_marks,false)
-viewport_rect(img_horz_marks, 196, 270, 300, 290)
+viewport_rect(img_horz_marks, 196, 260, 300, 300)
+--viewport_rect(img_horz_marks, 170, 220, 320, 340)
+--img_bank_indicators_mask =		img_add("bank_indicators_mask_img.png", 159.524, (800 - 112.416 - 501.494), 377.363, 112.416)visible(img_bank_indicators_mask,false)
+img_bank_indicators =			img_add("bank_indicators_img.png", 174.205, 183.442, 348.690, 106.585)visible(img_bank_indicators,false)
+--//// markers
+i_marker_img = 					img_add("i_marker_img.png", 484, 194.6, 45.4, 45.4)visible(i_marker_img,false)
+m_marker_img = 					img_add("m_marker_img.png", 484, 194.6, 45.4, 45.4)visible(m_marker_img,false)
+o_marker_img = 					img_add("o_marker_img.png", 484, 194.6, 45.4, 45.4)visible(o_marker_img,false)
+--
 img_fd_hnav =					img_add("flight_director.png", 238, 377, 222, 4) visible(img_fd_hnav,false)
 img_fd_vnav = 					img_add("flight_director.png", 348, 267, 4, 222) visible(img_fd_vnav,false)
 
@@ -92,17 +96,17 @@ end) visible(cmd_fd_rect,false)
 
 qnh_amber_rect = canvas_add(0, 0, 800, 800, function()
 	_rect(595, 697, 128, 34, 1)
-	_stroke("#FF7F2A", 2)
+	_stroke("#FFAE2A", 2)
 end) visible(qnh_amber_rect,false)
 
 qnh_std_amber_rect = canvas_add(0, 0, 800, 800, function()
 	_rect(600, 697, 105, 34, 1)
-	_stroke("#FF7F2A", 2)
+	_stroke("#FFAE2A", 2)
 end) visible(qnh_std_amber_rect,false)
 
 radio_alt_box = canvas_add(0, 0, 800, 800, function()
 	_rect(285, 520, 125, 50, 0)
-	--_stroke("#FF7F2A", 2)
+	--_stroke("#FFAE2A", 2)
 	_fill("black")
 end) visible(radio_alt_box,false)
 
@@ -147,12 +151,12 @@ radio_baro_text = 			txt_add(" ", "size:18px; font:my737glass.otf; color: lime; 
 --
 qnh_value_text = 			txt_add(" ", "size:24px; font:my737glass.otf; color: lime; halign:left;", 599.468, 700, 80, 30)visible(qnh_value_text,false)
 qnh_unit_text = 			txt_add(" ", "size:16px; font:my737glass.otf; color: lime; halign:left;", 686.960, 708.66, 45, 20)visible(qnh_unit_text,false)
-qnh_value_amber_text = 		txt_add(" ", "size:24px; font:my737glass.otf; color: #FF7F2A; halign:left;", 599.468, 700, 80, 30)visible(qnh_value_amber_text,false)
-qnh_unit_amber_text = 		txt_add(" ", "size:16px; font:my737glass.otf; color: #FF7F2A; halign:left;", 686.960, 708.66, 45, 20)visible(qnh_unit_amber_text,false)
+qnh_value_amber_text = 		txt_add(" ", "size:24px; font:my737glass.otf; color: #FFAE2A; halign:left;", 599.468, 700, 80, 30)visible(qnh_value_amber_text,false)
+qnh_unit_amber_text = 		txt_add(" ", "size:16px; font:my737glass.otf; color: #FFAE2A; halign:left;", 686.960, 708.66, 45, 20)visible(qnh_unit_amber_text,false)
 qnh_value_white_text = 		txt_add(" ", "size:14px; font:my737glass.otf; color: white; halign:left;", 610, 733, 50, 18)visible(qnh_value_white_text,false)
 qnh_unit_white_text = 		txt_add(" ", "size:12px; font:my737glass.otf; color: white; halign:left;", 667, 735, 45, 16)visible(qnh_unit_white_text,false)
 qnh_std_text = 				txt_add(" ", "size:28px; font:my737glass.otf; color: lime; halign:center;", 610, 696, 84, 32)visible(qnh_std_text,false)
-qnh_std_amber_text = 		txt_add(" ", "size:28px; font:my737glass.otf; color: #FF7F2A; halign:center;", 610, 700, 80, 32)visible(qnh_std_amber_text,false)
+qnh_std_amber_text = 		txt_add(" ", "size:28px; font:my737glass.otf; color: #FFAE2A; halign:center;", 610, 700, 80, 32)visible(qnh_std_amber_text,false)
 --
 radio_altimeter_text = 		txt_add(" ", "size:30px; font:my737glass.otf; color: white; halign:center;", 285, 527, 125, 36)visible(radio_altimeter_text,false)
 mag_tru_indication =		txt_add(" ", "size:14px; font:my737glass.otf; color: lime; halign:left;", 400, 773, 40, 16)visible(mag_tru_indication,false)
@@ -161,14 +165,13 @@ current_vspeed_neg_text =	txt_add(" ", "size:24px; font:my737glass.otf; color: w
 --
 
 ---//// failure flags goes above everything else
-img_vert_fail = 				img_add("vert_fail_img.png", 752.928, 325.114, 31, 118.25)visible(img_vert_fail,false)
-img_att_fail = 					img_add("att_fail_img.png", 320, 313, 57, 34)visible(img_att_fail,false)
-img_hdg_fail = 					img_add("hdg_fail_img.png", 320, 752, 57, 34)visible(img_hdg_fail,false)
-img_ldg_alt_fail = 				img_add("ldg_alt_fail_img.png", 712, 658.67, 37, 36.330)visible(img_ldg_alt_fail,false)
-no_vspd_img = 					img_add("no_vspd_img.png", 125, 200, 31, 128.2)visible(no_vspd_img,false)
-alt_disagree_img = 				img_add("alt_disagree_img.png", 606, 635, 90, 34.597)visible(alt_disagree_img,false)
-ias_disagree_img = 				img_add("ias_disagree_img.png", 22, 635, 90, 34.597)visible(ias_disagree_img,false)
-
+img_vert_fail = 			img_add("vert_fail_img.png", 752.928, 325.114, 31, 118.25)visible(img_vert_fail,false)
+img_att_fail = 				img_add("att_fail_img.png", 320, 313, 57, 34)visible(img_att_fail,false)
+img_hdg_fail = 				img_add("hdg_fail_img.png", 320, 752, 57, 34)visible(img_hdg_fail,false)
+img_ldg_alt_fail = 			img_add("ldg_alt_fail_img.png", 712, 658.67, 37, 36.330)visible(img_ldg_alt_fail,false)
+no_vspd_img = 				img_add("no_vspd_img.png", 128, 212, 26.7, 131.644)visible(no_vspd_img,false)
+alt_disagree_img = 			img_add("alt_disagree_img.png", 608.302, 635, 86.706, 35.013)visible(alt_disagree_img,false)
+ias_disagree_img = 			img_add("ias_disagree_img.png", 22.652, 635, 86.328, 35.231)visible(ias_disagree_img,false)
 
 
 -- TEXT STYLES SOPS
@@ -804,6 +807,7 @@ show_when_irs_aligned = group_add(selected_hdg_bug_text,
 								  selected_heading_bug_img,
 								  img_v_speed_tape,
 								  img_bank_indicators,
+								  --img_bank_indicators_mask,
 								  img_horz_back,
 								  img_horz_marks,
 								  img_center_box,
@@ -815,6 +819,7 @@ function pfd_callback(vr_set, irs_align_light, alignment_left_remain, radio_alti
 	visible(no_vspd_img, 					vr_set == 0 and radio_altimeter_height_ft_pilot < 20) --V1 (decision speed) or VR (rotation speed) has not been entered or is invalid, also goes away on takeoff.
 	visible(img_att_fail, 					(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
 	visible(img_hdg_fail, 					(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
+
 	
 --[[ 	visible(selected_hdg_bug_text, 			irs_align_light == 0 and fmc_irs_mode == 2)
 	visible(selected_hdg_bug_text1,			irs_align_light == 0 and fmc_irs_mode == 2)
