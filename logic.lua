@@ -263,7 +263,7 @@ end
 
 running_text_inner_alt_major100_id = running_txt_add_ver(678,311,3,20,54, item_value_callback_inner_alt_major100, "size:28px; font:my737glass.otf; color:white; halign:right")
 running_txt_move_carot(running_text_inner_alt_major100_id, 0)
-viewport_rect(running_text_inner_alt_major100_id,671,354,32,57)
+viewport_rect(running_text_inner_alt_major100_id,671,354,40,57)
 
 
 function item_value_callback_inner_alt_major1000(i)
@@ -279,7 +279,7 @@ end
 --running_text_inner_alt_major1000_id = running_txt_add_ver(628,294,3,50,65, item_value_callback_inner_alt_major1000, "size:38px; font:my737glass.otf; color:white; halign:right")
 running_text_inner_alt_major1000_id = running_txt_add_ver(628,310,3,50,54, item_value_callback_inner_alt_major1000, "size:30px; font:my737glass.otf; color:white; halign:right")
 running_txt_move_carot(running_text_inner_alt_major1000_id, 0)
-viewport_rect(running_text_inner_alt_major1000_id,640,367,35,38)
+viewport_rect(running_text_inner_alt_major1000_id,640,367,40,38)
 
 --/// altitude text ends 10, 100 and 1000
 
