@@ -166,12 +166,22 @@ current_vspeed_neg_text =	txt_add(" ", "size:24px; font:my737glass.otf; color: w
 
 ---//// failure flags goes above everything else
 img_vert_fail = 			img_add("vert_fail_img.png", 752.928, 325.114, 31, 118.25)visible(img_vert_fail,false)
-img_att_fail = 				img_add("att_fail_img.png", 320, 313, 57, 34)visible(img_att_fail,false)
-img_hdg_fail = 				img_add("hdg_fail_img.png", 320, 752, 57, 34)visible(img_hdg_fail,false)
 img_ldg_alt_fail = 			img_add("ldg_alt_fail_img.png", 712, 658.67, 37, 36.330)visible(img_ldg_alt_fail,false)
 no_vspd_img = 				img_add("no_vspd_img.png", 128, 212, 26.7, 131.644)visible(no_vspd_img,false)
 alt_disagree_img = 			img_add("alt_disagree_img.png", 608.302, 635, 86.706, 35.013)visible(alt_disagree_img,false)
 ias_disagree_img = 			img_add("ias_disagree_img.png", 22.652, 635, 86.328, 35.231)visible(ias_disagree_img,false)
+
+att_failure_flag_box = canvas_add(0, 0, 800, 800, function()
+	_rect(320, 313, 52, 34)
+	_stroke("#FFAE2A", 3)
+end)visible(att_failure_flag_box,false)
+
+hdg_failure_flag_box = canvas_add(0, 0, 800, 800, function()
+	_rect(320, 752, 52, 34)
+	_stroke("#FFAE2A", 3)
+end)visible(hdg_failure_flag_box,false)
+txt_att_failure_flag =				txt_add("ATT", "size:22px; font:my737glass.otf; color: #FFAE2A; halign:center;", 296, 317, 100, 50) visible(txt_att_failure_flag,false)
+txt_hdg_failure_flag =				txt_add("HDG", "size:22px; font:my737glass.otf; color: #FFAE2A; halign:center;", 296, 756, 100, 50) visible(txt_hdg_failure_flag,false)
 
 
 -- TEXT STYLES SOPS
@@ -328,13 +338,6 @@ txt_set(radio_baro_text, "RADIO")
 
 txt_set(qnh_std_text, "STD")
 txt_set(qnh_std_amber_text, "STD")
-
-
-black_bg_no_power = canvas_add(0, 0, 800, 800, function()
-	_fill("black")
-end) -- blackout if no power
-
-
 
 --/// Functions
 
@@ -817,8 +820,10 @@ function pfd_callback(vr_set, irs_align_light, alignment_left_remain, radio_alti
 
 
 	visible(no_vspd_img, 					vr_set == 0 and radio_altimeter_height_ft_pilot < 20) --V1 (decision speed) or VR (rotation speed) has not been entered or is invalid, also goes away on takeoff.
-	visible(img_att_fail, 					(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
-	visible(img_hdg_fail, 					(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
+	visible(hdg_failure_flag_box,			(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
+	visible(txt_hdg_failure_flag,			(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
+	visible(att_failure_flag_box,			(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
+	visible(txt_att_failure_flag,			(irs_align_light == 0 and alignment_left_remain == -1) or fmc_irs_mode ~= 2)
 
 	
 --[[ 	visible(selected_hdg_bug_text, 			irs_align_light == 0 and fmc_irs_mode == 2)
@@ -873,14 +878,25 @@ end
 xpl_dataref_subscribe("laminar/B738/pfd/flight_director_pitch_pilot", "FLOAT",
 					  "sim/cockpit/autopilot/flight_director_roll", "FLOAT", flight_director) --]]
 					  
-function pwr_callback(batbus_status)
+black_bg_no_power = canvas_add(0, 0, 800, 800, function()
+	_fill("black")
+end) -- blackout if no power
+
+fade = canvas_add(0, 0, 800, 800, function() --black canvas for fading instrument
+	_fill("black")
+end)visible(fade,true)
+					  
+function pwr_callback(instrument_brightness, batbus_status)
 
 	visible(black_bg_no_power, 	batbus_status == 0)
 	visible(img_mainPFD, 		batbus_status == 1)
 	visible(img_alt_box,		batbus_status == 1)
 	visible(img_spd_box,		batbus_status == 1)
+	local x = 1 - instrument_brightness[1] -- fades the PFD
+	opacity(fade, x)
 end
-xpl_dataref_subscribe("laminar/B738/electric/batbus_status", "INT", pwr_callback)		
+xpl_dataref_subscribe(	"laminar/B738/electric/instrument_brightness", "FLOAT[16]",
+						"laminar/B738/electric/batbus_status", "INT", pwr_callback)		
 
 --TO DOs
 --AoA
