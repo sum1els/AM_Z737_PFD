@@ -45,7 +45,11 @@ img_horz_marks = 				img_add("horizon_marks.png", 248.523, -370, 200, 1500) visi
 viewport_rect(img_horz_marks, 196, 260, 300, 300)
 --viewport_rect(img_horz_marks, 170, 220, 320, 340)
 --img_bank_indicators_mask =		img_add("bank_indicators_mask_img.png", 159.524, (800 - 112.416 - 501.494), 377.363, 112.416)visible(img_bank_indicators_mask,false)
-img_bank_indicators =			img_add("bank_indicators_img.png", 174.205, 183.442, 348.690, 106.585)visible(img_bank_indicators,false)
+img_bank_indicators =			img_add("bank_indicators_img.png", 174.205, 183.442, 348.690, 106.585)	visible(img_bank_indicators,false)
+img_bank_angle_white =			img_add("bank_angle_triangle_img.png", 330.963, 199.32, 35, 26)		visible(img_bank_angle_white,true)
+img_bank_angle_amber =			img_add("bank_angle_triangle_amber_img.png", 330.963, 199.32, 35, 26)	visible(img_bank_angle_amber,false)
+img_slip_indicator =			img_add("slip_indicator.png", 330.963, 226.58, 35, 10)					visible(img_slip_indicator,true)
+img_slip_indicator_warn =		img_add("slip_indicator_warn.png", 330.963, 226.58, 35, 10)				visible(img_slip_indicator_warn,false)	
 --//// markers
 i_marker_img = 					img_add("i_marker_img.png", 484, 194.6, 45.4, 45.4)visible(i_marker_img,false)
 m_marker_img = 					img_add("m_marker_img.png", 484, 194.6, 45.4, 45.4)visible(m_marker_img,false)
@@ -515,10 +519,31 @@ end
 xpl_dataref_subscribe("laminar/B738/autopilot/pfd_fd_cmd", "INT",  
 					  "laminar/B738/autopilot/cmd_a_status", "INT", ap_status_callback) --]]
 
-function roll_pitch_callback(roll, pitch, pfd_fd_cmd, cmd_a_status, fd_pitch, fd_roll, nose_gear_force)
+function roll_pitch_callback(roll, pitch, slip, pfd_fd_cmd, cmd_a_status, fd_pitch, fd_roll, nose_gear_force)
 
 	roll = roll * -1
 	
+	visible(img_slip_indicator, math.abs(roll) < 35 and math.abs(slip) < 25)
+	visible(img_slip_indicator_warn, math.abs(roll) >= 35 or math.abs(slip) >= 25)
+	visible(img_bank_angle_white, math.abs(roll) < 35)
+	visible(img_bank_angle_amber, math.abs(roll) >= 35)
+	
+	xbank, ybank = geo_rotate_coordinates(roll, 168)
+	img_rotate(img_bank_angle_white, roll)
+	img_rotate(img_bank_angle_amber, roll)
+	move(img_bank_angle_white, xbank + 330.963, 199 + 168 + ybank, nil, nil)
+	move(img_bank_angle_amber, xbank + 330.963, 199 + 168 + ybank, nil, nil)
+
+	xslip, yslip = geo_rotate_coordinates(roll, 148)
+	roll_rad = math.rad(roll)
+
+    local x = slip * math.cos(roll_rad)
+	local y = slip * math.sin(roll_rad)
+
+	img_rotate(img_slip_indicator, roll)
+	move(img_slip_indicator, xslip + x + 330.963, 226.68 + 148 + y + yslip, nil, nil)
+	img_rotate(img_slip_indicator_warn, roll)
+	move(img_slip_indicator_warn, xslip + x + 330.963, 226.68 + 148 + y + yslip, nil, nil)
 
 	pitch = var_cap(pitch, -40, 40)
 	radial = math.rad(roll)
@@ -552,6 +577,7 @@ function roll_pitch_callback(roll, pitch, pfd_fd_cmd, cmd_a_status, fd_pitch, fd
 end
 xpl_dataref_subscribe("sim/cockpit2/gauges/indicators/roll_AHARS_deg_pilot", "FLOAT", 
 					  "sim/cockpit2/gauges/indicators/pitch_AHARS_deg_pilot", "FLOAT", 
+					  "sim/cockpit2/gauges/indicators/slip_deg", "FLOAT",
 					  "laminar/B738/autopilot/pfd_fd_cmd", "INT", 
 					  "laminar/B738/autopilot/cmd_a_status", "INT", 
 					  "laminar/B738/pfd/flight_director_pitch_pilot", "FLOAT", 
@@ -624,7 +650,7 @@ function altitude_callback(alt_disagree, ias_disagree, baro_in_hpa, baro_pilot, 
 	visible(radio_alt_box,			radio_altimeter_height < 2500 and display_altimeter)
 	visible(radio_altimeter_text,	radio_altimeter_height < 2500 and display_altimeter)
 	
-	visible(img_grn_marker,			altitude_ft_pilot < 10000)
+	visible(img_grn_marker,			var_round(altitude_ft_pilot) < 10000)
 	
 	if gear_force > 0 then
 		txt_set(radio_altimeter_text, 	"-4") -- altimeter to display -4 when at the gate. need to calibrate to display 0 at touchdown. http://www.airliners.net/forum/viewtopic.php?t=776215 
